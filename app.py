@@ -1,6 +1,6 @@
 # Import required libraries
 import numpy as np
-import pandas_datareader as web
+#import pandas_datareader as web
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 from keras.models import Sequential
