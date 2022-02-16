@@ -18,13 +18,10 @@ from datetime import date
 from datetime import datetime, timedelta
 import streamlit as st
 
-
+today = date.today()
 # Get the Stock price
-end_date = '2022-02-15'
+end_date = date.today() - timedelta(4)
 start_date = '2010-12-12'
-
-# Get the data
-#data = yf.download('AAPL', start_date, end_date)
 
 
 #### Streamlit Web App
@@ -204,4 +201,4 @@ st.write ("___________________________________________________________")
 st.write ("")
 st.write ("Stock Price Prediction using LSTM Final Project for Applied ML (8/12) Course by Markovdata.com  ")
 st.markdown('**Created By:**')
-st.write("Ahmed B. Darwish  \nAsmaa Mahmoud  \nAhmed Mohammed")
+st.write("Ahmed Darwish  \nAsmaa Mahmoud  \nAhmed Mohammed")
