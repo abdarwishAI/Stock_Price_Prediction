@@ -18,10 +18,13 @@ from datetime import date
 from datetime import datetime, timedelta
 import streamlit as st
 
-today = date.today()
+
 # Get the Stock price
-end_date = date.today() - timedelta(4)
+end_date = '2022-02-15'
 start_date = '2010-12-12'
+
+# Get the data
+#data = yf.download('AAPL', start_date, end_date)
 
 
 #### Streamlit Web App
