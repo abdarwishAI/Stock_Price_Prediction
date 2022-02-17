@@ -1,2 +1,2 @@
-# Stock_Price_Prediction
-Predict Stock Prices
+# Project1
+ Stock_Prediction

@@ -13,14 +13,17 @@ import math
 import datetime
 import joblib
 from tensorflow import keras
-import os
+#import os
 from datetime import date
 from datetime import datetime, timedelta
 import streamlit as st
 
 
 # Get the Stock price
-end_date = '2022-02-15'
+import datetime
+from datetime import date
+today = date.today()
+end_date = today
 start_date = '2010-12-12'
 
 # Get the data
@@ -72,14 +75,14 @@ dataset = data.values
 training_data_len = math.ceil(len(dataset)* 0.70)
 
 # Scaling the data using saved Scaler
-my_scaler = joblib.load('my_scaler.gz')
+scaler = joblib.load('my_scaler.gz')
 
 # Transform the data
-scaled_data = my_scaler.fit_transform(dataset)
+scaled_data = scaler.fit_transform(dataset)
 
 # Load ML Model
 #model_file = os.getcwd() + '/' + 'Price_prediction.h5'
-my_model = keras.models.load_model('Price_prediction.h5')
+my_model = keras.models.load_model('Price_V3.h5')
 
 # Create test dataset
 test_data = scaled_data[training_data_len - 60:, :]
@@ -96,7 +99,7 @@ x_test = np.reshape(x_test, (x_test.shape[0], x_test.shape[1], 1))
 # Predict x_test
 predictions = my_model.predict(x_test)
 # convert back the predicted values into original data "reverse MinMax scaler"
-predictions = my_scaler.inverse_transform(predictions)
+predictions = scaler.inverse_transform(predictions)
 
 # Evaluate the model using RMSE
 def Model_evaluation(prediction, y_test):
@@ -134,7 +137,7 @@ st.write(actual2.head())
 ############### Now Lets Compare Last days data
 today = date.today()
 yesterday = date.today() - timedelta(1)
-lastdays = date.today() - timedelta(5)
+lastdays = date.today() - timedelta(7)
 start_date = '2010-12-12'
 end_date = yesterday
 ticker = Ticker
@@ -142,16 +145,16 @@ dfy1 = yf.download(ticker, start_date, end_date)
 dfy2 = dfy1.filter(['Close'])
 
 previous_days = dfy2[-60:].values
-my_scaler = joblib.load('my_scaler.gz')
-previous_days_scaled = my_scaler.transform(previous_days)
+#my_scaler = joblib.load('my_scaler.gz')
+previous_days_scaled = scaler.transform(previous_days)
 x_test2 = []
 x_test2.append(previous_days_scaled)
 x_test2 = np.array(x_test2)
 x_test2 = np.reshape(x_test2, (x_test2.shape[0],x_test2.shape[1], 1 ))
 #model_file = os.getcwd() + '/' + 'Price_prediction.h5'
-my_model = keras.models.load_model('Price_prediction.h5')
+my_model = keras.models.load_model('Price_V3.h5')
 predict_Last_price = my_model.predict(x_test2)
-predict_Last_price = my_scaler.inverse_transform(predict_Last_price)
+predict_Last_price = scaler.inverse_transform(predict_Last_price)
 
 #check the actual price for yesterday
 start_date = lastdays
@@ -184,16 +187,16 @@ df1 = yf.download(ticker, start_date, end_date)
 df2= df1.filter(['Close'])
 
 previous_days = df2[-60:].values
-my_scaler = joblib.load('my_scaler.gz')
-previous_days_scaled = my_scaler.transform(previous_days)
+#my_scaler = joblib.load('my_scaler.gz')
+previous_days_scaled = scaler.transform(previous_days)
 x_test2 = []
 x_test2.append(previous_days_scaled)
 x_test2 = np.array(x_test2)
 x_test2 = np.reshape(x_test2, (x_test2.shape[0],x_test2.shape[1], 1 ))
 #model_file = os.getcwd() + '/' + 'Price_prediction.h5'
-my_model = keras.models.load_model('Price_prediction.h5')
+my_model = keras.models.load_model('Price_V3.h5')
 predict_future_price = my_model.predict(x_test2)
-predict_future_price = my_scaler.inverse_transform(predict_future_price)
+predict_future_price = scaler.inverse_transform(predict_future_price)
 
 
 st.subheader(f" Predecting New Day Closing Price")
@@ -202,6 +205,4 @@ st.write (f'Predicted closing price = {predict_future_price}')
 st.write ("")
 st.write ("___________________________________________________________")
 st.write ("")
-st.write ("Stock Price Prediction using LSTM Final Project for Applied ML (8/12) Course by Markovdata.com  ")
-st.markdown('**Created By:**')
-st.write("Ahmed Darwish  \nAsmaa Mahmoud  \nAhmed Mohammed")
+st.write ("") 
